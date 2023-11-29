@@ -1,5 +1,7 @@
 import random
 import os
+
+inventory = ["hej","hej","hej","hej","Hej","hej"]
 class Player:
 
     def __init__(self, HP, STRENGTH, LVL):
@@ -9,20 +11,29 @@ class Player:
 
 class Item:
 
-    def __init__(self) -> None:
-        pass
+    def __init__(self, name, strength_bonus):
+        self.name = name
+        self.strength = strength_bonus
 
-player = Player(100, 10, 1)
+
+player = Player(100, 1, 1)
+stick = Item("Pinne", 5)
+woodenSword = Item("Träsvärd", random.randint(10,20))
+ironSword = Item("Järnsvärd", random.randint(20,50))
+
+
+def addItem(item):
+    inventory.append(item.name)
 
 # Funktion för Start menyn
 def start_menu():
     while True:
         choice = input("Vill du börja spela? (y/n): ")
-        if choice == "y":
-            print("Din uppgift är att passera genom dörrar, vid varje dörr får du antigen öppna en kista, slåss mot ett monster eller så snubblar du in i en fälla. \nÄr det en kista bakom dörren får du ett nytt svärd med slumpmässig styrka \n Är det en fälla bakom dörren tar du skada\n Är det ett monster bakom dörren utbrister en strid, förlorar du striden tar du 10 skada, vinner du striden går du upp i nivå \nSpelet är avklarat när du nått nivå 10 ")
+        if choice.lower() == "y":
+            print("Din uppgift är att passera genom dörrar. Där kan du vänta dig lite olika hinder men om du har tur kan du även hitta en kista.\nFör att vinna spelet måste du nå nivå 10 och det gör du genom att utforska och slåss mot monster.")
+            choose_action()
             break
-        elif choice == "n":
-            print("Spelet Avslutat")
+        elif choice.lower() == "n":
             break
         else:
             print("Du måste svara Y eller N")
@@ -30,7 +41,7 @@ def start_menu():
 def choose_action():
     # os.system('cls')
     while True:
-        actionChoice = input("[1]Kolla ditt inventory\n[2]Kolla dina egenskaper\n[3]Välj en dörr\n")
+        actionChoice = input("[1]Kolla ditt inventory\n[2]Kolla dina egenskaper\n[3]Välj en dörr\nVälj ett av alternativen: ")
         if actionChoice == "1":
             break
         elif actionChoice == "2":
@@ -69,8 +80,26 @@ def monster():
         print(f"Du stötte på en monster med")
     pass
 
+def chest():
+    print("Grattis du hittade en kista!")
+    randomWeapon = random.randint(1,45)
+    if randomWeapon <= 25:
+        print(f"Du fick en {stick.name.lower()} med {stick.strength} styrkepoäng")
+        addItem(stick)
+    elif randomWeapon <= 40:
+        print(f"Du fick ett {woodenSword.name.lower()} med {woodenSword.strength} styrkepoäng")
+        addItem(woodenSword)
+    elif randomWeapon <= 45:
+        print(f"Du fick ett {ironSword.name.lower()} med {ironSword.strength} styrkepoäng")
+        addItem(ironSword)
+    else:
+        print("Kistan var tom! ")
+
 def main():
-    start_menu(False)
+    choose_action()
     
-# main()
-choose_action()
+
+play = start_menu()
+if play == True:
+    while True:
+        main()
