@@ -25,14 +25,11 @@ class Player:
 
 class Item:
 
-    def __init__(self, name, min_strength_bonus, max_strength_bonus):
+    def __init__(self, name, strength_bonus):
         self.name = name
-        self.strength_bonus = random.randint(min_strength_bonus, max_strength_bonus)
+        self.strength_bonus = strength_bonus
 
 player = Player(100, 10, 1)
-stick = Item("Pinne", 15,20)
-woodenSword = Item("Träsvärd", 20,30)
-ironSword = Item("Järnsvärd", 30, 60)
 
 def calculate_total_strength():
     totalStrength = player.strength
@@ -43,10 +40,9 @@ def calculate_total_strength():
 # Funktion för Start menyn
 def start_menu():
     while True:
-        slow_print("Välkommen till Sagan Om Dörren\n")
-        choice = input("Vill du börja spela? (y/n): ")
+        slow_print("        Välkommen till Sagan Om Dörren!\n")
+        choice = input("\n        Vill du börja spela? (y/n) \n\n        ")
         if choice.lower() == "y":
-            slow_print("Din uppgift är att passera genom dörrar. Där kan du vänta dig lite olika hinder men om du har tur kan du även hitta en kista.\nFör att vinna spelet måste du nå nivå 10 och det gör du genom att utforska och slåss mot monster.")
             choose_action()
             break
         elif choice.lower() == "n":
@@ -56,20 +52,22 @@ def start_menu():
 
 def choose_action():
     while True:
-        actionChoice = input("\n[1]Kolla ditt inventory\n[2]Kolla dina egenskaper\n[3]Välj en dörr\nVälj ett av alternativen: ")
+        actionChoice = input("""\n\n        [1]Kolla ditt inventory     [2]Kolla dina egenskaper        [3]Välj en dörr\n\n        """)
         if actionChoice == "1":
             if len(player.inventory) > 0:
-                slow_print("Detta finns i ditt inventory:\n")
+                slow_print("\n        Inventory: ")
                 for item in player.inventory:
-                    slow_print(f"{item.name} med {item.strength_bonus} styrka, ")
+                    slow_print(f"{item.name} - {item.strength_bonus} styrka | ")
+                    input("\n\nTryck \"Enter\" för att fortsätta")
                 break
             else:
-                slow_print("Ditt inventory är tomt.")
+                slow_print("\n        Ditt inventory är tomt.\n\n")
+                input("Tryck \"Enter\" för att fortsätta")
 
         elif actionChoice == "2":
             totalStrength = calculate_total_strength()
-            slow_print(f"HP: {player.hp}\nStyrka: {totalStrength}\nNivå: {player.lvl}\n")
-            time.sleep(0.5)
+            slow_print(f"\n        HP: {player.hp}\n\n        Styrka: {totalStrength}\n\n        Nivå: {player.lvl}\n\n")
+            input("Tryck \"Enter\" för att fortsätta")
             break
         elif actionChoice == "3":
             door()
@@ -93,56 +91,69 @@ def remove_weakest_item(inventory):
 
 # Funktion för vad som finns bakom dörrarna
 def door():
-    input("Välj dörr 1, 2 eller 3: ")
-    behindDoor = random.randint(1, 3)
-    if behindDoor == 1:
-        trap()
-    elif behindDoor == 2:
-        monster()
-    elif behindDoor == 3:
-        chest()
+    while True:
+        doorChoice = input("""\n        1. Grön dörr        2. Vit dörr        3. Gul dörr\n\n        """)
+        if doorChoice == "1" or doorChoice == "2" or doorChoice == "3":
+            behindDoor = random.randint(1, 10)
+            if behindDoor <= 2:
+                trap()
+                break
+            elif behindDoor <= 6:
+                monster()
+                break
+            elif behindDoor <= 10:
+                chest()
+                break
+        else:
+            print("\n        Du måste välja mellan 1, 2 eller 3!")
+            input("\n\nTryck \"Enter\" för att fortsätta")
+            
 
 # Funktion för hur mycket skada fällor ger
 def trap():
-    trapDamage = random.randint(10, 30)
+    trapDamage = random.randint(10, 20)
     player.hp -= trapDamage
-    slow_print(f"Du gick in i en fälla och tappade {trapDamage} HP")
+    slow_print(f"\n        Du gick in i en fälla och tappade {trapDamage} HP\n\n")
+    input("Tryck \"Enter\" för att fortsätta")
 
 # Funktion för monster
 def monster():
     totalStrength = calculate_total_strength()
-    monsterStrength = random.randint(1, 100)
-    print(f"Du stötte på ett monster med {monsterStrength} styrka.")
+    if player.lvl <= 3:
+        monsterStrength = random.randint(1, 50)
+    elif player.lvl <= 5:
+        monsterStrength = random.randint(25, 75)
+    elif player.lvl <= 10:
+        monsterStrength = random.randint(100, 200)
+    slow_print(f"\n        Du stötte på ett monster med {monsterStrength} styrka.\n")
     if monsterStrength > totalStrength:
         player.hp -= 10
-        slow_print(f"Monstret var starkare än dig så du tappade 10 HP!")
+        slow_print(f"\n        Monstret var starkare än dig så du tappade 10 HP!")
     elif monsterStrength < totalStrength:
         player.lvl += 1
-        slow_print(f"Du var starkare än monstret så du vann striden. Du gick upp en nivå!")
+        slow_print(f"\n        Du var starkare än monstret så du vann striden. Du gick upp en nivå!")
     elif monsterStrength == totalStrength:
-        slow_print(f"Du var lika stark som monstret så striden blev oavgjord!")
+        slow_print(f"\n        Du var lika stark som monstret så striden blev oavgjord!")
+    input("\n\nTryck \"Enter\" för att fortsätta")
 
 #Funktion för kistor
 def chest():
-    print("Grattis du hittade en kista!")
-
-    stick.strength_bonus = random.randint(10, 20)
-    woodenSword.strength_bonus = random.randint(20, 30)
-    ironSword.strength_bonus = random.randint(30, 60)
-
+    print("\n        Grattis du hittade en kista!")
     randomWeapon = random.randint(1,45)
+
     if randomWeapon <= 25:
-        slow_print(f"Du hittade en {stick.name.lower()} med {stick.strength_bonus} styrkepoäng")
-        found_item = stick
+        found_item = Item("Järnrör", random.randint(15,25))
+        slow_print(f"\n        Det fanns ett {found_item.name.lower()} med {found_item.strength_bonus} styrkepoäng")
     elif randomWeapon <= 40:
-        slow_print(f"Du hittade ett {woodenSword.name.lower()} med {woodenSword.strength_bonus} styrkepoäng")
-        found_item = woodenSword
+        found_item = Item("Träsvärd", random.randint(30,45))
+        slow_print(f"\n        Det fanns ett {found_item.name.lower()} med {found_item.strength_bonus} styrkepoäng")
     elif randomWeapon <= 45:
-        slow_print(f"Du hittade ett {ironSword.name.lower()} med {ironSword.strength_bonus} styrkepoäng")
-        found_item = ironSword
+        found_item = Item("Järnsvärd", random.randint(50,75))
+        slow_print(f"\n        Det fanns ett {found_item.name.lower()} med {found_item.strength_bonus} styrkepoäng")
+
     if len(player.inventory) >= 5:
         while True:
-            changeWeapon = input(f"\nDitt inventory är fullt, vill du byta ut ditt sämsta vapen mot detta? (y/n) ")           
+            changeWeapon = input(f"\n\n        Ditt inventory är fullt, vill du byta ut ditt sämsta vapen mot detta? (y/n)\n\n ")           
             if changeWeapon.lower() == "y":
                 remove_weakest_item(player.inventory)
                 player.addItem(found_item)
@@ -150,16 +161,17 @@ def chest():
             elif changeWeapon.lower() == "n":
                 break
             else:
-                print("Du måste svara y eller n")     
+                print("\n        Du måste svara y eller n")     
     else:
         player.addItem(found_item)
+    input("\n\nTryck \"Enter\" för att fortsätta")
 
 
 
 def main():
     if player.hp <= 0:
         while True:
-            playAgain = input("\nDu dog! Vill du börja om? (y/n)")
+            playAgain = input("\n       Du dog! Vill du börja om? (y/n)")
             if playAgain.lower() == "y":
                 player.reset()
                 break
@@ -170,14 +182,14 @@ def main():
     
     if player.lvl == 10:
         while True:
-            playAgain = input("\nGrattis du vann! Vill du spela igen? (y/n)")
+            playAgain = input("\n\n       Grattis du vann! Vill du spela igen? (y/n)\n       ")
             if playAgain.lower() == "y":
                 player.reset()
                 break
             elif playAgain.lower() == "n":
                 exit()
             else:
-                print("Du måste svara y eller n")
+                print("\n       Du måste svara y eller n")
     choose_action()
     
 start_menu()
