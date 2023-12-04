@@ -1,8 +1,9 @@
 import random
 import time
 
-PRINT_SPEED = 0#.035
+PRINT_SPEED = 0.035
 SCENARIOPRINT_SPEED = 1.5
+OUTRO_SPEED = 0.5
 
 
 class Player:#Klass för spelaren
@@ -43,8 +44,8 @@ def calculate_total_strength(): #Används för att räkna ut spelarens totala st
 
 
 def start_menu():# Funktion för Start menyn
+    slow_print("        Välkommen till Sagan Om Dörren!\n")
     while True:
-        slow_print("        Välkommen till Sagan Om Dörren!\n")
         choice = input("\n        Vill du börja spela? (y/n) \n\n        ")
         if choice.lower() == "y":
             choose_action()
@@ -59,18 +60,18 @@ def choose_action(): #Loop som programmet hela tiden kommer tillbaka till. Där 
         actionChoice = input("""\n\n        [1]Kolla ditt inventory     [2]Kolla dina egenskaper        [3]Välj en dörr\n\n        """)
         if actionChoice == "1":
             if len(player.inventory) > 0: #Kollar om inventoryt är tomt. Om det är tomt printar den att det är tomt annars printar det innehåller i inventoryt.
-                slow_print("\n        Inventory: ")
+                print("\n        Inventory: ", end='')
                 for item in player.inventory:
-                    slow_print(f"{item.name} - {item.strength_bonus} styrka | ")
+                    print(f"{item.name} - {item.strength_bonus} styrka |", end='')
                 input("\n\nTryck \"Enter\" för att fortsätta")
                 break
             else:
-                slow_print("\n        Ditt inventory är tomt.\n\n")
+                print("\n        Ditt inventory är tomt.\n\n")
                 input("Tryck \"Enter\" för att fortsätta")
 
         elif actionChoice == "2":
             totalStrength = calculate_total_strength()#Skriver ut spelarens egenskaper.
-            slow_print(f"\n        HP: {player.hp}\n\n        Styrka: {totalStrength}\n\n        Nivå: {player.lvl}\n\n")
+            print(f"\n        HP: {player.hp}\n\n        Styrka: {totalStrength}\n\n        Nivå: {player.lvl}\n\n")
             input("Tryck \"Enter\" för att fortsätta")
             break
         elif actionChoice == "3":#Kallar på door() funktionen.
@@ -96,7 +97,6 @@ def remove_weakest_item(item):#Tar bort svagaste objektet från inventoryt. Find
     index = player.inventory.index(item)
     player.inventory.pop(index)
 
-
 def door():# Funktion för vad som finns bakom dörrarna
     while True:
         doorChoice = input("""\n        1. Grön dörr        2. Vit dörr        3. Gul dörr\n\n        """)
@@ -105,7 +105,7 @@ def door():# Funktion för vad som finns bakom dörrarna
             if behindDoor <= 1:
                 trap()
                 break
-            elif behindDoor <= 7:
+            elif behindDoor <= 6:
                 result, monsterStrength = monster()
                 different_scenarios(result, monsterStrength)
                 break
@@ -115,8 +115,6 @@ def door():# Funktion för vad som finns bakom dörrarna
         else:
             print("\n        Du måste välja mellan 1, 2 eller 3!")
             input("\n\nTryck \"Enter\" för att fortsätta")
-            
-
 
 def trap():# Funktion för fällor. Tre scenarion som det slumpas mellan för lite variation i spelupplevelsen.
     trapDamage = random.randint(10, 20)
@@ -217,7 +215,6 @@ def different_scenarios(result, monsterStrength):#De olika scenariona när man s
             print("\n        ***Du fortsätter ditt äventyr, och golemen sänker sig tillbaka i marken, låtandes dig vara i fred.***")
     input("\n\nTryck \"Enter\" för att fortsätta")
 
-
 def monster():# Funktion för monster
     totalStrength = calculate_total_strength()
     if player.lvl <= 3:
@@ -236,8 +233,6 @@ def monster():# Funktion för monster
     else:
         result = "tie"
     return result, monsterStrength
-
-
 
 def chest():#Funktion för kistor
     randomWeapon = random.randint(1,45)
@@ -281,8 +276,6 @@ def chest():#Funktion för kistor
         player.addItem(found_item)
     input("\n\nTryck \"Enter\" för att fortsätta")
 
-
-
 def main():#Huvudloopen
     if player.hp <= 0:
         while True:
@@ -295,21 +288,21 @@ def main():#Huvudloopen
             else:
                 print("Du måste svara y eller n")
     
-    if player.lvl == 10:
+    if player.lvl == 1:
         slow_print("\n\n        Du har övervunnit alla faror, besegrat skräckinjagande monster och plundrat gömda kistor.")
-        time.sleep(SCENARIOPRINT_SPEED)
+        time.sleep(OUTRO_SPEED)
         slow_print("\n        Ditt mod och din skicklighet har tagit dig genom de mystiska dörrarna och överlevt det okända.")
-        time.sleep(SCENARIOPRINT_SPEED)
+        time.sleep(OUTRO_SPEED)
         slow_print("\n        När du öppnar den sista dörren, strålar ljuset in och en känsla av triumf fyller ditt hjärta.")
-        time.sleep(SCENARIOPRINT_SPEED)
+        time.sleep(OUTRO_SPEED)
         slow_print("\n        Plötsligt hör du en dånande röst från det förflutna, en röst som hyllar din styrka och mod.")
-        time.sleep(SCENARIOPRINT_SPEED)
+        time.sleep(OUTRO_SPEED)
         slow_print("\n        \"Du, modige äventyrare, har klarat prövningarna och bevisat dig vara en sann hjälte!\"")
-        time.sleep(SCENARIOPRINT_SPEED)
+        time.sleep(OUTRO_SPEED)
         slow_print("\n        Ditt namn kommer att bli känt och berättat i hela landet som den som erövrade Sagan Om Dörren.")
-        time.sleep(SCENARIOPRINT_SPEED)
+        time.sleep(OUTRO_SPEED)
         slow_print("\n        Du står där, omgiven av ära och seger, redo för nya äventyr och oviss framtid.")
-        time.sleep(SCENARIOPRINT_SPEED)
+        time.sleep(OUTRO_SPEED)
         slow_print("\n        Tack för att du deltog i Sagan Om Dörren!\n\n")
         while True:
             playAgain = input("\n\n       Grattis du vann! Vill du spela igen? (y/n)\n       ")
