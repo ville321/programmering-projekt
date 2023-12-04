@@ -4,27 +4,30 @@ import time
 PRINT_SPEED = 0#.035
 SCENARIOPRINT_SPEED = 1.5
 
-class Player:
+
+class Player:#Klass för spelaren
 
     def __init__(self, hp, strength, lvl):
         self.hp = hp
         self.strength = strength
         self.lvl = lvl
-        self.start_hp = hp
+        #self.start variablerna används för att spara originala värdena utan att variablarna ändras som variablarna ovanför gör under programmet.
+        self.start_hp = hp 
         self.start_strength = strength
         self.start_lvl = lvl
         self.inventory = []
 
-    def reset(self):
+    def reset(self): #Sätter hp, lvl, styrka och inventory till originala värden när funktionen kallas. 
         self.hp = self.start_hp
         self.strength = self.start_strength
         self.lvl = self.start_lvl
         self.inventory = []
     
-    def addItem(self, item):
+    def addItem(self, item): #Sätter in "item" i inventory listan
         self.inventory.append(item)
 
-class Item:
+
+class Item:#klass för items
 
     def __init__(self, name, strength_bonus):
         self.name = name
@@ -32,14 +35,14 @@ class Item:
 
 player = Player(100, 10, 1)
 
-def calculate_total_strength():
+def calculate_total_strength(): #Används för att räkna ut spelarens totala styrka (spelarens styrka + vapnenas kombinerade styrkebonus)
     totalStrength = player.strength
     for item in player.inventory:
         totalStrength += item.strength_bonus
     return totalStrength
 
-# Funktion för Start menyn
-def start_menu():
+
+def start_menu():# Funktion för Start menyn
     while True:
         slow_print("        Välkommen till Sagan Om Dörren!\n")
         choice = input("\n        Vill du börja spela? (y/n) \n\n        ")
@@ -51,11 +54,11 @@ def start_menu():
         else:
             print("Du måste svara y eller n")
 
-def choose_action():
+def choose_action(): #Loop som programmet hela tiden kommer tillbaka till. Där man får göra sina val. 
     while True:
         actionChoice = input("""\n\n        [1]Kolla ditt inventory     [2]Kolla dina egenskaper        [3]Välj en dörr\n\n        """)
         if actionChoice == "1":
-            if len(player.inventory) > 0:
+            if len(player.inventory) > 0: #Kollar om inventoryt är tomt. Om det är tomt printar den att det är tomt annars printar det innehåller i inventoryt.
                 slow_print("\n        Inventory: ")
                 for item in player.inventory:
                     slow_print(f"{item.name} - {item.strength_bonus} styrka | ")
@@ -66,39 +69,39 @@ def choose_action():
                 input("Tryck \"Enter\" för att fortsätta")
 
         elif actionChoice == "2":
-            totalStrength = calculate_total_strength()
+            totalStrength = calculate_total_strength()#Skriver ut spelarens egenskaper.
             slow_print(f"\n        HP: {player.hp}\n\n        Styrka: {totalStrength}\n\n        Nivå: {player.lvl}\n\n")
             input("Tryck \"Enter\" för att fortsätta")
             break
-        elif actionChoice == "3":
+        elif actionChoice == "3":#Kallar på door() funktionen.
             door()
             break
-        else:
+        else:#Gör att loopen börjar om ifall man svarar något annat än alternativen
             print("Du måste välja mellan 1, 2 eller 3!")
             
-def slow_print(txt):
+def slow_print(txt):#tar en string och skriver ut varje bokstav för sig med lite mellanrum för att få ett finare print
     for letter in txt:
         print(letter, end='', flush = True)
         time.sleep(PRINT_SPEED)
 
-def find_weakest_item(inventory):
+def find_weakest_item(inventory):#Antar att första objektet i inventory är det svagaste och jämför det sedan med resterande objekt och sätter det svagaste till weakest_item
     weakest_item = inventory[0]
     for item in inventory[1:]:
         if item.strength_bonus < weakest_item.strength_bonus:
             weakest_item = item
     return weakest_item
 
-def remove_weakest_item(item):
+def remove_weakest_item(item):#Tar bort svagaste objektet från inventoryt. Find_weakest_item och den här funktionen är separata för att lätt kunna printa det svagaste föremålet utan att ta bort det.
     item = find_weakest_item(player.inventory)
     index = player.inventory.index(item)
     player.inventory.pop(index)
 
-# Funktion för vad som finns bakom dörrarna
-def door():
+
+def door():# Funktion för vad som finns bakom dörrarna
     while True:
         doorChoice = input("""\n        1. Grön dörr        2. Vit dörr        3. Gul dörr\n\n        """)
         if doorChoice == "1" or doorChoice == "2" or doorChoice == "3":
-            behindDoor = random.randint(1, 10)
+            behindDoor = random.randint(1, 10)#Istället för att slumpa mellan 1 till 3 har vi såhär så att man kan styra oddsen.
             if behindDoor <= 2:
                 trap()
                 break
@@ -114,14 +117,31 @@ def door():
             input("\n\nTryck \"Enter\" för att fortsätta")
             
 
-# Funktion för hur mycket skada fällor ger
-def trap():
+
+def trap():# Funktion för fällor. Tre scenarion som det slumpas mellan för lite variation i spelupplevelsen.
     trapDamage = random.randint(10, 20)
     player.hp -= trapDamage
-    slow_print(f"\n        Du gick in i en fälla och tappade {trapDamage} HP\n\n")
-    input("Tryck \"Enter\" för att fortsätta")
+    trapScenario = random.randint(1, 3)
+    if trapScenario == 1:
+        print(f"\n        ***Du trampar på en dold fallucka och förlorar {trapDamage} HP!***")
+        time.sleep(SCENARIOPRINT_SPEED)
+        print("\n        ***Smärtan skär genom dig när du känner spikarna under dina fötter.***")
+        time.sleep(SCENARIOPRINT_SPEED)
+        print("\n        ***Med kraft tar du dig upp och fortsätter din färd.***")
+        time.sleep(SCENARIOPRINT_SPEED)
+    elif trapScenario == 2:
+        print(f"\n        ***Plötsligt aktiveras en fördold snärjning, och du tar {trapDamage} HP skada!***")
+        time.sleep(SCENARIOPRINT_SPEED)
+        print("\n        ***Du undrar hur du kunde missa den listiga fällan, men du går vidare med försiktighet.***")
+        time.sleep(SCENARIOPRINT_SPEED)
+    elif trapScenario == 3:
+        print(f"\n        ***En dold mekanism utlöses, och du förlorar {trapDamage} HP!***")
+        time.sleep(SCENARIOPRINT_SPEED)
+        print("\n        ***Du tar dig samman och fortsätter din resa.***")
+        time.sleep(SCENARIOPRINT_SPEED)
+    input("\n\nTryck \"Enter\" för att fortsätta")
 
-def different_scenarios(result, monsterStrength):
+def different_scenarios(result, monsterStrength):#De olika scenariona när man stöter på ett monster. Det finns tre scenarion med tre versioner ifall man vinner, förlorar eller om det blir lika.
     randomScenario = random.randint(1,3)
     if randomScenario == 1:
         if result== "win":            
@@ -197,8 +217,8 @@ def different_scenarios(result, monsterStrength):
             print("\n        ***Du fortsätter ditt äventyr, och golemen sänker sig tillbaka i marken, låtandes dig vara i fred.***")
     input("\n\nTryck \"Enter\" för att fortsätta")
 
-# Funktion för monster
-def monster():
+
+def monster():# Funktion för monster
     totalStrength = calculate_total_strength()
     if player.lvl <= 3:
         monsterStrength = random.randint(1, 50)
@@ -218,19 +238,34 @@ def monster():
     return result, monsterStrength
 
 
-#Funktion för kistor
-def chest():
+
+def chest():#Funktion för kistor
     randomWeapon = random.randint(1,45)
     if randomWeapon <= 25:
         found_item = Item("Träsvärd", random.randint(15,25))
-        slow_print(f"\n        Du hittade en kista med ett {found_item.name.lower()} som har {found_item.strength_bonus} styrkepoäng")
     elif randomWeapon <= 40:
         found_item = Item("Järnsvärd", random.randint(30,45))
-        slow_print(f"\n        Du hittade en kista med ett {found_item.name.lower()} som har {found_item.strength_bonus} styrkepoäng")
     elif randomWeapon <= 45:
         found_item = Item("Guldsvärd", random.randint(50,75))
-        slow_print(f"\n        Du hittade en kista med ett {found_item.name.lower()} som har {found_item.strength_bonus} styrkepoäng")
 
+    chestScenario = random.randint(1, 3)
+    if chestScenario == 1:
+        print("\n        ***Du hittar en gammal kista dold bland ruinerna. Du öppnar den försiktigt.***")
+        time.sleep(SCENARIOPRINT_SPEED)
+        print(f"\n        ***Inuti hittar du ett {found_item.name.lower()} med {found_item.strength_bonus} styrkepoäng!***")
+        time.sleep(SCENARIOPRINT_SPEED)
+    elif chestScenario == 2:
+        print("\n        ***När du vandrar genom skogen, upptäcker du en gömd skattkista.***")
+        time.sleep(SCENARIOPRINT_SPEED)
+        print(f"\n        ***Inuti finner du ett {found_item.name.lower()} med {found_item.strength_bonus} styrkepoäng!***")
+        time.sleep(SCENARIOPRINT_SPEED)
+    elif chestScenario == 3:
+        print("\n        ***I distansen ser du någonting lysa.***")
+        time.sleep(SCENARIOPRINT_SPEED)
+        print("\n        ***Du springer dit och hittar en guldig kista.***")
+        time.sleep(SCENARIOPRINT_SPEED)
+        print(f"\n        ***Bland skatten finns ett {found_item.name.lower()} med {found_item.strength_bonus} styrkepoäng!***")
+        time.sleep(SCENARIOPRINT_SPEED)
     if len(player.inventory) >= 5:
         while True:
             changeWeapon = input(f"\n\n        Ditt inventory är fullt, vill du byta ut ditt sämsta vapen som har {find_weakest_item(player.inventory).strength_bonus} styrka, mot detta? (y/n)\n\n        ")           
@@ -248,7 +283,7 @@ def chest():
 
 
 
-def main():
+def main():#Huvudloopen
     if player.hp <= 0:
         while True:
             playAgain = input("\n       Du dog! Vill du börja om? (y/n)")
