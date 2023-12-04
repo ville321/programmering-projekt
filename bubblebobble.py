@@ -102,10 +102,10 @@ def door():# Funktion för vad som finns bakom dörrarna
         doorChoice = input("""\n        1. Grön dörr        2. Vit dörr        3. Gul dörr\n\n        """)
         if doorChoice == "1" or doorChoice == "2" or doorChoice == "3":
             behindDoor = random.randint(1, 10)#Istället för att slumpa mellan 1 till 3 har vi såhär så att man kan styra oddsen.
-            if behindDoor <= 2:
+            if behindDoor <= 1:
                 trap()
                 break
-            elif behindDoor <= 6:
+            elif behindDoor <= 7:
                 result, monsterStrength = monster()
                 different_scenarios(result, monsterStrength)
                 break
