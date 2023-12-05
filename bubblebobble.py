@@ -90,7 +90,7 @@ def choose_action(): #Loop som programmet hela tiden kommer tillbaka till. Där 
             break
         else:#Gör att loopen börjar om ifall man svarar något annat än alternativen
             print("Du måste välja mellan 1, 2 eller 3!")
-            
+            clear()
 def slow_print(txt):#tar en string och skriver ut varje bokstav för sig med lite mellanrum för att få ett finare print
     for letter in txt:
         print(letter, end='', flush = True)
