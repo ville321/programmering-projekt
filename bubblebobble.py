@@ -1,11 +1,13 @@
 import random
 import time
+import os
 
 PRINT_SPEED = 0.035
 SCENARIOPRINT_SPEED = 1.5
 OUTRO_SPEED = 0.5
 
-
+def clear():
+    os.system('cls')
 class Player:#Klass för spelaren
 
     def __init__(self, hp, strength, lvl):
@@ -68,6 +70,7 @@ def choose_action(): #Loop som programmet hela tiden kommer tillbaka till. Där 
             else:
                 print("\n        Ditt inventory är tomt.\n\n")
                 input("Tryck \"Enter\" för att fortsätta")
+                clear()
 
         elif actionChoice == "2":
             totalStrength = calculate_total_strength()#Skriver ut spelarens egenskaper.
@@ -107,7 +110,7 @@ def door():# Funktion för vad som finns bakom dörrarna
                 break
             elif behindDoor <= 6:
                 result, monsterStrength = monster()
-                different_scenarios(result, monsterStrength)
+                different_monster_scenarios(result, monsterStrength)
                 break
             elif behindDoor <= 10:
                 chest()
@@ -139,7 +142,7 @@ def trap():# Funktion för fällor. Tre scenarion som det slumpas mellan för li
         time.sleep(SCENARIOPRINT_SPEED)
     input("\n\nTryck \"Enter\" för att fortsätta")
 
-def different_scenarios(result, monsterStrength):#De olika scenariona när man stöter på ett monster. Det finns tre scenarion med tre versioner ifall man vinner, förlorar eller om det blir lika.
+def different_monster_scenarios(result, monsterStrength):#De olika scenariona när man stöter på ett monster. Det finns tre scenarion med tre versioner ifall man vinner, förlorar eller om det blir lika.
     randomScenario = random.randint(1,3)
     if randomScenario == 1:
         if result== "win":            
@@ -288,7 +291,7 @@ def main():#Huvudloopen
             else:
                 print("Du måste svara y eller n")
     
-    if player.lvl == 1:
+    if player.lvl == 10:
         slow_print("\n\n        Du har övervunnit alla faror, besegrat skräckinjagande monster och plundrat gömda kistor.")
         time.sleep(OUTRO_SPEED)
         slow_print("\n        Ditt mod och din skicklighet har tagit dig genom de mystiska dörrarna och överlevt det okända.")
