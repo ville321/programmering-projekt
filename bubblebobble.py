@@ -7,7 +7,12 @@ SCENARIOPRINT_SPEED = 1.5
 OUTRO_SPEED = 0.5
 
 def clear():
+    input("\n(Tryck \"Enter\" för att fortsätta)")
     os.system('cls')
+
+def section():
+    print("        ___________________________________________________________________________")
+
 class Player:#Klass för spelaren
 
     def __init__(self, hp, strength, lvl):
@@ -46,6 +51,7 @@ def calculate_total_strength(): #Används för att räkna ut spelarens totala st
 
 
 def start_menu():# Funktion för Start menyn
+    os.system('cls')
     slow_print("        Välkommen till Sagan Om Dörren!\n")
     while True:
         choice = input("\n        Vill du börja spela? (y/n) \n\n        ")
@@ -59,23 +65,25 @@ def start_menu():# Funktion för Start menyn
 
 def choose_action(): #Loop som programmet hela tiden kommer tillbaka till. Där man får göra sina val. 
     while True:
+        
         actionChoice = input("""\n\n        [1]Kolla ditt inventory     [2]Kolla dina egenskaper        [3]Välj en dörr\n\n        """)
         if actionChoice == "1":
+            section()
             if len(player.inventory) > 0: #Kollar om inventoryt är tomt. Om det är tomt printar den att det är tomt annars printar det innehåller i inventoryt.
                 print("\n        Inventory: ", end='')
                 for item in player.inventory:
-                    print(f"{item.name} - {item.strength_bonus} styrka |", end='')
-                input("\n\nTryck \"Enter\" för att fortsätta")
+                    print(f"{item.name} - {item.strength_bonus} styrka |\n", end='')
+                clear()
                 break
             else:
-                print("\n        Ditt inventory är tomt.\n\n")
-                input("Tryck \"Enter\" för att fortsätta")
+                print("\n        Ditt inventory är tomt.\n")
                 clear()
 
         elif actionChoice == "2":
             totalStrength = calculate_total_strength()#Skriver ut spelarens egenskaper.
-            print(f"\n        HP: {player.hp}\n\n        Styrka: {totalStrength}\n\n        Nivå: {player.lvl}\n\n")
-            input("Tryck \"Enter\" för att fortsätta")
+            section()
+            print(f"\n        Egenskaper:\n\n            HP: {player.hp}\n\n            Styrka: {totalStrength}\n\n            Nivå: {player.lvl}\n")
+            clear()
             break
         elif actionChoice == "3":#Kallar på door() funktionen.
             door()
@@ -95,7 +103,7 @@ def find_weakest_item(inventory):#Antar att första objektet i inventory är det
             weakest_item = item
     return weakest_item
 
-def remove_weakest_item(item):#Tar bort svagaste objektet från inventoryt. Find_weakest_item och den här funktionen är separata för att lätt kunna printa det svagaste föremålet utan att ta bort det.
+def remove_weakest_item():#Tar bort svagaste objektet från inventoryt. Find_weakest_item och den här funktionen är separata för att lätt kunna printa det svagaste föremålet utan att ta bort det.
     item = find_weakest_item(player.inventory)
     index = player.inventory.index(item)
     player.inventory.pop(index)
@@ -117,7 +125,7 @@ def door():# Funktion för vad som finns bakom dörrarna
                 break
         else:
             print("\n        Du måste välja mellan 1, 2 eller 3!")
-            input("\n\nTryck \"Enter\" för att fortsätta")
+            clear()
 
 def trap():# Funktion för fällor. Tre scenarion som det slumpas mellan för lite variation i spelupplevelsen.
     trapDamage = random.randint(10, 20)
@@ -140,7 +148,7 @@ def trap():# Funktion för fällor. Tre scenarion som det slumpas mellan för li
         time.sleep(SCENARIOPRINT_SPEED)
         print("\n        ***Du tar dig samman och fortsätter din resa.***")
         time.sleep(SCENARIOPRINT_SPEED)
-    input("\n\nTryck \"Enter\" för att fortsätta")
+    clear()
 
 def different_monster_scenarios(result, monsterStrength):#De olika scenariona när man stöter på ett monster. Det finns tre scenarion med tre versioner ifall man vinner, förlorar eller om det blir lika.
     randomScenario = random.randint(1,3)
@@ -216,8 +224,7 @@ def different_monster_scenarios(result, monsterStrength):#De olika scenariona n�
             print("\n        ***Du och golem står emot varandra, redo för strid. Golemen verkar känna din beslutsamhet och drar sig tillbaka.***")
             time.sleep(SCENARIOPRINT_SPEED)
             print("\n        ***Du fortsätter ditt äventyr, och golemen sänker sig tillbaka i marken, låtandes dig vara i fred.***")
-    input("\n\nTryck \"Enter\" för att fortsätta")
-
+    clear()
 def monster():# Funktion för monster
     totalStrength = calculate_total_strength()
     if player.lvl <= 3:
@@ -266,7 +273,7 @@ def chest():#Funktion för kistor
         time.sleep(SCENARIOPRINT_SPEED)
     if len(player.inventory) >= 5:
         while True:
-            changeWeapon = input(f"\n\n        Ditt inventory är fullt, vill du byta ut ditt sämsta vapen som har {find_weakest_item(player.inventory).strength_bonus} styrka, mot detta? (y/n)\n\n        ")           
+            changeWeapon = input(f"\n\n        Ditt inventory är fullt, vill du byta ut ditt sämsta vapen som har {find_weakest_item(player.inventory).strength_bonus} styrka, mot detta? (y/n)\n        ")           
             if changeWeapon.lower() == "y":
                 remove_weakest_item(find_weakest_item(player.inventory))
                 player.addItem(found_item)
@@ -277,8 +284,7 @@ def chest():#Funktion för kistor
                 print("\n        Du måste svara y eller n")     
     else:
         player.addItem(found_item)
-    input("\n\nTryck \"Enter\" för att fortsätta")
-
+    clear()
 def main():#Huvudloopen
     if player.hp <= 0:
         while True:
