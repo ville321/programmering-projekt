@@ -100,18 +100,24 @@ def choose_action(): #Loop som programmet hela tiden kommer tillbaka till. Där 
             section()
             print("\n        Du måste välja mellan 1, 2 eller 3!")
             clear()
+
 def slow_print(txt):#tar en string och skriver ut varje bokstav för sig med lite mellanrum för att få ett finare print
     for letter in txt:
         print(letter, end='', flush = True)
         time.sleep(PRINT_SPEED)
 
+def print_list_slow(list):#Tar emot en lista och skriver ut varje föremål i listan med en liten delay
+    for i in list:
+        print(i)
+        time.sleep(SCENARIOPRINT_SPEED)
+
 def doorText(door):
     if door == '1':
-        return "***Du öppnar och stiger in i rummet genom den Gröna dörren***"
+        return "***Du öppnar och stiger in i rummet genom den gröna dörren***"
     elif door == '2':
-        return "***Du öppnar och stiger in i rummet genom den Vita dörren***"
+        return "***Du öppnar och stiger in i rummet genom den vita dörren***"
     elif door == '3':
-        return "***Du öppnar och stiger in i rummet genom den Gula dörren***"
+        return "***Du öppnar och stiger in i rummet genom den gula dörren***"
 
 def find_weakest_item(inventory):#Antar att första objektet i inventory är det svagaste och jämför det sedan med resterande objekt och sätter det svagaste till weakest_item
     weakest_item = inventory[0]
@@ -177,80 +183,59 @@ def trap(doorChoice):# Funktion för fällor. Tre scenarion som det slumpas mell
         time.sleep(SCENARIOPRINT_SPEED)
     clear()
 
-def print_list_slow(list):
-    for i in list:
-        print(i)
-        time.sleep(SCENARIOPRINT_SPEED)
+
 
 def different_monster_scenarios(result, monsterStrength, doorChoice):#De olika scenariona när man stöter på ett monster. Det finns tre scenarion med tre versioner ifall man vinner, förlorar eller om det blir lika.
     randomScenario = random.randint(1,3)
+    print(f"\n        {doorText(doorChoice)}")
+    time.sleep(SCENARIOPRINT_SPEED)
     if randomScenario == 1:
-        if result== "win":       
-            print(f"\n        {doorText(doorChoice)}")
-            time.sleep(SCENARIOPRINT_SPEED)     
-            print(f"\n        ***Ett troll med {monsterStrength} styrka dyker upp framför dig***")
-            time.sleep(SCENARIOPRINT_SPEED)
-            print("\n        ***Trollet svingar sin slägga mot dig***")
-            time.sleep(SCENARIOPRINT_SPEED)
-            print("\n        ***Du slänger dig åt sidan och hugger sedan trollet med ditt vassa svärd.***")
-            time.sleep(SCENARIOPRINT_SPEED)
-            print("\n        ***Trollet faller ned på marken med ett duns***")
-            time.sleep(SCENARIOPRINT_SPEED)
-            print("\n        Du besegrade trollet och gick upp en nivå")
+        if result== "win":     
+            print_list_slow([
+                f"\n        ***Ett troll med {monsterStrength} styrka dyker upp framför dig***",
+                "\n        ***Trollet svingar sin slägga mot dig***",
+                "\n        ***Du slänger dig åt sidan och hugger sedan trollet med ditt vassa svärd.***",
+                "\n        ***Trollet faller ned på marken med ett duns***",
+                "\n        Du besegrade trollet och gick upp en nivå"
+            ])  
         elif result == "loss":
-            print(f"\n        {doorText(doorChoice)}")
-            time.sleep(SCENARIOPRINT_SPEED) 
-            print(f"\n        ***Ett troll med {monsterStrength} styrka dyker upp framför dig***")
-            time.sleep(SCENARIOPRINT_SPEED)
-            print("\n        ***Trollet svingar sin slägga mot dig***")
-            time.sleep(SCENARIOPRINT_SPEED)
-            print("\n        ***Du försöker ducka men är för långsam och blir träffad***")
-            time.sleep(SCENARIOPRINT_SPEED)
-            print("\n        ***Du flyr från trollet och springer vidare.***")
-            time.sleep(SCENARIOPRINT_SPEED)
-            print("\n        Du blev skadad av trollet och förlorade 10 HP")
+            print_list_slow([
+                f"\n        ***Ett troll med {monsterStrength} styrka dyker upp framför dig***",
+                "\n        ***Trollet svingar sin slägga mot dig***",
+                "\n        ***Du försöker ducka men är för långsam och blir träffad***",
+                "\n        ***Du flyr från trollet och springer vidare.***",
+                "\n        Du blev skadad av trollet och förlorade 10 HP"
+            ])
         elif result == "tie":
-            print(f"\n        {doorText(doorChoice)}")
-            time.sleep(SCENARIOPRINT_SPEED) 
-            print(f"\n        ***Ett troll med {monsterStrength} styrka dyker upp framför dig***")
-            time.sleep(SCENARIOPRINT_SPEED)
-            print("\n        ***Du tar fram ditt svärd och trollet tar fram sin gigantiska slägga***")
-            time.sleep(SCENARIOPRINT_SPEED)
-            print("\n        ***Ni båda inser att ingen kommer vinna striden utan stora skador***")
-            time.sleep(SCENARIOPRINT_SPEED)
-            print("\n        ***Trollet går sin väg och du fortsätter på ditt äventyr***")
-            time.sleep(SCENARIOPRINT_SPEED)
+            print_list_slow([
+                f"\n        ***Ett troll med {monsterStrength} styrka dyker upp framför dig***",
+                "\n        ***Du tar fram ditt svärd och trollet tar fram sin gigantiska slägga***",
+                "\n        ***Ni båda inser att ingen kommer vinna striden utan stora skador***",
+                "\n        ***Trollet går sin väg och du fortsätter på ditt äventyr***"
+            ])
     elif randomScenario == 2:
         if result == "win":        
-            print(f"\n        {doorText(doorChoice)}")
-            time.sleep(SCENARIOPRINT_SPEED)     
-            print(f"\n        ***En majestätisk elddrake med {monsterStrength} styrka stiger fram ur lågorna framför dig***")
-            time.sleep(SCENARIOPRINT_SPEED)
-            print("\n        ***Elddraken rusar mot dig med eldsflammor dansande runt dess skarpa klor. Du duckar och hugger till med ditt svärd.***")
-            time.sleep(SCENARIOPRINT_SPEED)
-            print("\n        ***Du lyckas träffa elddrakens svans, och den rullar i smärta. Elddraken sänker sig ner och ger upp.***")
-            time.sleep(SCENARIOPRINT_SPEED)
-            print("\n        Elddraken besegrad! Du känner en varm kraft inom dig och går upp en nivå.")
+            print_list_slow([
+                f"\n        ***En majestätisk elddrake med {monsterStrength} styrka stiger fram ur lågorna framför dig***",
+                "\n        ***Elddraken rusar mot dig med eldsflammor dansande runt dess skarpa klor. Du duckar och hugger till med ditt svärd.***",
+                "\n        ***Du lyckas träffa elddrakens svans, och den rullar i smärta. Elddraken sänker sig ner och ger upp.***",
+                "\n        Elddraken besegrad! Du känner en varm kraft inom dig och går upp en nivå."
+            ])
         elif result == "loss":
-            print(f"\n        {doorText(doorChoice)}")
-            time.sleep(SCENARIOPRINT_SPEED) 
-            print(f"\n        ***En majestätisk elddrake med {monsterStrength} styrka stiger fram ur lågorna framför dig***")
-            time.sleep(SCENARIOPRINT_SPEED)
-            print("\n        ***Du försöker parera elddrakens flammor, men en eldboll träffar dig. Du känner värmen bränna och förlorar 10 HP.***")
-            time.sleep(SCENARIOPRINT_SPEED)
-            print("\n        ***Elddraken skrattar och flyger bort.***")
+            print_list_slow([
+                f"\n        ***En majestätisk elddrake med {monsterStrength} styrka stiger fram ur lågorna framför dig***",
+                "\n        ***Du försöker parera elddrakens flammor, men en eldboll träffar dig. Du känner värmen bränna och förlorar 10 HP.***",
+                "\n        ***Elddraken skrattar och flyger bort.***"
+            ])
         elif result == "tie":
-            print(f"\n        {doorText(doorChoice)}")
-            time.sleep(SCENARIOPRINT_SPEED) 
-            print(f"\n        ***En majestätisk elddrake med {monsterStrength} styrka stiger fram ur lågorna framför dig***")
-            time.sleep(SCENARIOPRINT_SPEED)
-            print("\n        ***Du möter elddraken med ditt svärd redo för strid. Ni båda går till attack men efter några slag inser ni att det är i förgäves.***")
-            time.sleep(SCENARIOPRINT_SPEED)
-            print("\n        ***Efter en kort konfrontation flyger elddraken bort och lämnar dig oskadd. Du fortsätter ditt äventyr.***")
+            print_list_slow([
+                f"\n        ***En majestätisk elddrake med {monsterStrength} styrka stiger fram ur lågorna framför dig***",
+                "\n        ***Du möter elddraken med ditt svärd redo för strid. Ni båda går till attack men efter några slag inser ni att det är i förgäves.***",
+                "\n        ***Efter en kort konfrontation flyger elddraken bort och lämnar dig oskadd. Du fortsätter ditt äventyr.***"
+            ])
     elif randomScenario == 3:
         if result == "win":    
             print_list_slow( [
-                f"\n        {doorText(doorChoice)}",
                 f"\n        ***En forntida jordgolem med {monsterStrength} styrka reser sig ur marken framför dig***",
                 "\n        ***Golemen rusar mot dig med steniga nävar, men du undviker smidigt och kontrar med ditt vassa svärd.***",
                 "\n        ***Du lyckas hugga av golemens stenarmar och träffa dess svaga punkt. Golemen kollapsar till stendamm.***",
@@ -258,14 +243,12 @@ def different_monster_scenarios(result, monsterStrength, doorChoice):#De olika s
             ])
         elif result == "loss":
             print_list_slow([
-                f"\n        {doorText(doorChoice)}",
                 f"\n        ***En forntida jordgolem med {monsterStrength} styrka reser sig ur marken framför dig***",
                 "\n        ***Golemen slår till med sina massiva nävar, och du försöker undvika dem, men blir träffad. Du förlorar 10 HP.***",
                 "\n        ***Golemen skrattar med sitt stenansikte och sänker sig tillbaka i marken.***"
             ])
         elif result == "tie":
             print_list_slow([
-                f"\n        {doorText(doorChoice)}",
                 f"\n        ***En forntida jordgolem med {monsterStrength} styrka reser sig ur marken framför dig***",
                 "\n        ***Du och golem står emot varandra, redo för strid. Golemen verkar känna din beslutsamhet och drar sig tillbaka.***",
                 "\n        ***Du fortsätter ditt äventyr, och golemen sänker sig tillbaka i marken, låtandes dig vara i fred.***"
@@ -327,7 +310,7 @@ def chest(doorChoice):#Funktion för kistor
         while True:
             changeWeapon = input(f"\n\n        Ditt inventory är fullt, vill du byta ut ditt sämsta vapen som har {find_weakest_item(player.inventory).strength_bonus} styrka, mot detta? (y/n)\n        ")           
             if changeWeapon.lower() == "y":
-                remove_weakest_item(find_weakest_item(player.inventory))
+                remove_weakest_item()
                 player.addItem(found_item)
                 break
             elif changeWeapon.lower() == "n":
