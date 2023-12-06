@@ -158,29 +158,24 @@ def trap(doorChoice):# Funktion för fällor. Tre scenarion som det slumpas mell
     trapDamage = random.randint(10, 20)
     player.hp -= trapDamage
     trapScenario = random.randint(1, 3)
+    print(f"\n        {doorText(doorChoice)}")
+    time.sleep(SCENARIOPRINT_SPEED)
     if trapScenario == 1:
-        print(f"\n        {doorText(doorChoice)}")
-        time.sleep(SCENARIOPRINT_SPEED)
-        print(f"\n        ***Du trampar på en dold fallucka och förlorar {trapDamage} HP!***")
-        time.sleep(SCENARIOPRINT_SPEED)
-        print("\n        ***Smärtan skär genom dig när du känner spikarna under dina fötter.***")
-        time.sleep(SCENARIOPRINT_SPEED)
-        print("\n        ***Med kraft tar du dig upp och fortsätter din färd.***")
-        time.sleep(SCENARIOPRINT_SPEED)
+        print_list_slow([
+            f"\n        ***Du trampar på en dold fallucka och förlorar {trapDamage} HP!***",
+            "\n        ***Smärtan skär genom dig när du känner spikarna under dina fötter.***",
+            "\n        ***Med kraft tar du dig upp och fortsätter din färd.***"
+        ])
     elif trapScenario == 2:
-        print(f"\n        {doorText(doorChoice)}")
-        time.sleep(SCENARIOPRINT_SPEED)
-        print(f"\n        ***Plötsligt aktiveras en fördold snärjning, och du tar {trapDamage} HP skada!***")
-        time.sleep(SCENARIOPRINT_SPEED)
-        print("\n        ***Du undrar hur du kunde missa den listiga fällan, men du går vidare med försiktighet.***")
-        time.sleep(SCENARIOPRINT_SPEED)
+        print_list_slow([
+            f"\n        ***Plötsligt aktiveras en fördold snärjning, och du tar {trapDamage} HP skada!***",
+            "\n        ***Du undrar hur du kunde missa den listiga fällan, men du går vidare med försiktighet.***",
+        ])
     elif trapScenario == 3:
-        print(f"\n        {doorText(doorChoice)}")
-        time.sleep(SCENARIOPRINT_SPEED)
-        print(f"\n        ***En dold mekanism utlöses, och du förlorar {trapDamage} HP!***")
-        time.sleep(SCENARIOPRINT_SPEED)
-        print("\n        ***Du tar dig samman och fortsätter din resa.***")
-        time.sleep(SCENARIOPRINT_SPEED)
+        print_list_slow([
+            f"\n        ***En dold mekanism utlöses, och du förlorar {trapDamage} HP!***",
+            "\n        ***Du tar dig samman och fortsätter din resa.***"
+        ])
     clear()
 
 
@@ -283,29 +278,24 @@ def chest(doorChoice):#Funktion för kistor
         found_item = Item("Guldsvärd", random.randint(50,75))
 
     chestScenario = random.randint(1, 3)
+    print(f"\n        {doorText(doorChoice)}")
+    time.sleep(SCENARIOPRINT_SPEED)
     if chestScenario == 1:
-        print(f"\n        {doorText(doorChoice)}")
-        time.sleep(SCENARIOPRINT_SPEED) 
-        print("\n        ***Du hittar en gammal kista dold bland ruinerna. Du öppnar den försiktigt.***")
-        time.sleep(SCENARIOPRINT_SPEED)
-        print(f"\n        ***Inuti hittar du ett {found_item.name.lower()} med {found_item.strength_bonus} styrkepoäng!***")
-        time.sleep(SCENARIOPRINT_SPEED)
+        print_list_slow([
+            "\n        ***Du hittar en gammal kista dold bland ruinerna. Du öppnar den försiktigt.***",
+            f"\n        ***Inuti hittar du ett {found_item.name.lower()} med {found_item.strength_bonus} styrkepoäng!***",
+        ])
     elif chestScenario == 2:
-        print(f"\n        {doorText(doorChoice)}")
-        time.sleep(SCENARIOPRINT_SPEED) 
-        print("\n        ***När du vandrar genom skogen, upptäcker du en gömd skattkista.***")
-        time.sleep(SCENARIOPRINT_SPEED)
-        print(f"\n        ***Inuti finner du ett {found_item.name.lower()} med {found_item.strength_bonus} styrkepoäng!***")
-        time.sleep(SCENARIOPRINT_SPEED)
+        print_list_slow([
+            "\n        ***När du vandrar genom skogen, upptäcker du en gömd skattkista.***",
+            f"\n        ***Inuti finner du ett {found_item.name.lower()} med {found_item.strength_bonus} styrkepoäng!***"
+        ])
     elif chestScenario == 3:
-        print(f"\n        {doorText(doorChoice)}")
-        time.sleep(SCENARIOPRINT_SPEED) 
-        print("\n        ***I distansen ser du någonting lysa.***")
-        time.sleep(SCENARIOPRINT_SPEED)
-        print("\n        ***Du springer dit och hittar en guldig kista.***")
-        time.sleep(SCENARIOPRINT_SPEED)
-        print(f"\n        ***Bland skatten finns ett {found_item.name.lower()} med {found_item.strength_bonus} styrkepoäng!***")
-        time.sleep(SCENARIOPRINT_SPEED)
+        print_list_slow([
+            "\n        ***I distansen ser du någonting lysa.***",
+            "\n        ***Du springer dit och hittar en guldig kista.***",
+            f"\n        ***Bland skatten finns ett {found_item.name.lower()} med {found_item.strength_bonus} styrkepoäng!***"
+        ])
     if len(player.inventory) >= 5:
         while True:
             changeWeapon = input(f"\n\n        Ditt inventory är fullt, vill du byta ut ditt sämsta vapen som har {find_weakest_item(player.inventory).strength_bonus} styrka, mot detta? (y/n)\n        ")           
@@ -320,43 +310,36 @@ def chest(doorChoice):#Funktion för kistor
     else:
         player.addItem(found_item)
     clear()
+
+def play_again(txt):
+    while True:
+        playAgain = input(txt)
+        if playAgain.lower() == "y":
+            player.reset()
+            break
+        elif playAgain.lower() == "n":
+            exit()
+        else:
+            print("Du måste svara y eller n")
+
 def main():#Huvudloopen
-    if player.hp <= 0:
-        while True:
-            playAgain = input("\n       Du dog! Vill du börja om? (y/n)")
-            if playAgain.lower() == "y":
-                player.reset()
-                break
-            elif playAgain.lower() == "n":
-                exit()
-            else:
-                print("Du måste svara y eller n")
-    
     if player.lvl == 10:
-        slow_print("\n\n        Du har övervunnit alla faror, besegrat skräckinjagande monster och plundrat gömda kistor.")
-        time.sleep(OUTRO_SPEED)
-        slow_print("\n        Ditt mod och din skicklighet har tagit dig genom de mystiska dörrarna och överlevt det okända.")
-        time.sleep(OUTRO_SPEED)
-        slow_print("\n        När du öppnar den sista dörren, strålar ljuset in och en känsla av triumf fyller ditt hjärta.")
-        time.sleep(OUTRO_SPEED)
-        slow_print("\n        Plötsligt hör du en dånande röst från det förflutna, en röst som hyllar din styrka och mod.")
-        time.sleep(OUTRO_SPEED)
-        slow_print("\n        \"Du, modige äventyrare, har klarat prövningarna och bevisat dig vara en sann hjälte!\"")
-        time.sleep(OUTRO_SPEED)
-        slow_print("\n        Ditt namn kommer att bli känt och berättat i hela landet som den som erövrade Sagan Om Dörren.")
-        time.sleep(OUTRO_SPEED)
-        slow_print("\n        Du står där, omgiven av ära och seger, redo för nya äventyr och oviss framtid.")
-        time.sleep(OUTRO_SPEED)
-        slow_print("\n        Tack för att du deltog i Sagan Om Dörren!\n\n")
-        while True:
-            playAgain = input("\n\n       Grattis du vann! Vill du spela igen? (y/n)\n       ")
-            if playAgain.lower() == "y":
-                player.reset()
-                break
-            elif playAgain.lower() == "n":
-                exit()
-            else:
-                print("\n       Du måste svara y eller n")
+        print_list_slow([
+            "\n\n        Du har övervunnit alla faror, besegrat skräckinjagande monster och plundrat gömda kistor.",
+            "\n        Ditt mod och din skicklighet har tagit dig genom de mystiska dörrarna och överlevt det okända.",
+            "\n        När du öppnar den sista dörren, strålar ljuset in och en känsla av triumf fyller ditt hjärta.",
+            "\n        Plötsligt hör du en dånande röst från det förflutna, en röst som hyllar din styrka och mod.",
+            "\n        \"Du, modige äventyrare, har klarat prövningarna och bevisat dig vara en sann hjälte!\"",
+            "\n        Ditt namn kommer att bli känt och berättat i hela landet som den som erövrade Sagan Om Dörren.",
+            "\n        Du står där, omgiven av ära och seger, redo för nya äventyr och oviss framtid.",
+            "\n        Tack för att du deltog i Sagan Om Dörren!\n\n"
+        ])
+        play_again("        Grattis du vann! Vill du spela igen? (y/n)\n\n        ")
+    elif player.hp <= 0:
+        play_again("        Du dog! Vill du börja om? (y/n)\n\n        ")
+
+
+
     choose_action()
     
 start_menu()
