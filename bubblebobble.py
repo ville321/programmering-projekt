@@ -4,7 +4,6 @@ import os
 
 PRINT_SPEED = 0.035
 SCENARIOPRINT_SPEED = 1.5
-OUTRO_SPEED = 0.5
 
 def clear():
     input("\n(Tryck \"Enter\" för att fortsätta)")
@@ -12,6 +11,16 @@ def clear():
 
 def section():
     print("        ___________________________________________________________________________")
+
+def slow_print(txt):#tar en string och skriver ut varje bokstav för sig med lite mellanrum för att få ett finare print
+    for letter in txt:
+        print(letter, end='', flush = True)
+        time.sleep(PRINT_SPEED)
+
+def print_list_slow(list):#Tar emot en lista och skriver ut varje föremål i listan med en liten delay
+    for i in list:
+        print(i)
+        time.sleep(SCENARIOPRINT_SPEED)
 
 class Player:#Klass för spelaren
 
@@ -48,7 +57,6 @@ def calculate_total_strength(): #Används för att räkna ut spelarens totala st
     for item in player.inventory:
         totalStrength += item.strength_bonus
     return totalStrength
-
 
 def start_menu():# Funktion för Start menyn
     os.system('cls')
@@ -100,16 +108,6 @@ def choose_action(): #Loop som programmet hela tiden kommer tillbaka till. Där 
             section()
             print("\n        Du måste välja mellan 1, 2 eller 3!")
             clear()
-
-def slow_print(txt):#tar en string och skriver ut varje bokstav för sig med lite mellanrum för att få ett finare print
-    for letter in txt:
-        print(letter, end='', flush = True)
-        time.sleep(PRINT_SPEED)
-
-def print_list_slow(list):#Tar emot en lista och skriver ut varje föremål i listan med en liten delay
-    for i in list:
-        print(i)
-        time.sleep(SCENARIOPRINT_SPEED)
 
 def doorText(door):
     if door == '1':
@@ -177,8 +175,6 @@ def trap(doorChoice):# Funktion för fällor. Tre scenarion som det slumpas mell
             "\n        ***Du tar dig samman och fortsätter din resa.***"
         ])
     clear()
-
-
 
 def different_monster_scenarios(result, monsterStrength, doorChoice):#De olika scenariona när man stöter på ett monster. Det finns tre scenarion med tre versioner ifall man vinner, förlorar eller om det blir lika.
     randomScenario = random.randint(1,3)
