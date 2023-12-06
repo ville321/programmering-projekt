@@ -61,7 +61,8 @@ def start_menu():# Funktion för Start menyn
         elif choice.lower() == "n":
             exit()
         else:
-            print("Du måste svara y eller n")
+            section()
+            print("\n        Du måste svara y eller n")
 
 def choose_action(): #Loop som programmet hela tiden kommer tillbaka till. Där man får göra sina val. 
     while True:
@@ -89,7 +90,8 @@ def choose_action(): #Loop som programmet hela tiden kommer tillbaka till. Där 
             door()
             break
         else:#Gör att loopen börjar om ifall man svarar något annat än alternativen
-            print("Du måste välja mellan 1, 2 eller 3!")
+            section()
+            print("\n        Du måste välja mellan 1, 2 eller 3!")
             clear()
 def slow_print(txt):#tar en string och skriver ut varje bokstav för sig med lite mellanrum för att få ett finare print
     for letter in txt:
@@ -112,6 +114,7 @@ def door():# Funktion för vad som finns bakom dörrarna
     while True:
         doorChoice = input("""\n        1. Grön dörr        2. Vit dörr        3. Gul dörr\n\n        """)
         if doorChoice == "1" or doorChoice == "2" or doorChoice == "3":
+            section()
             behindDoor = random.randint(1, 10)#Istället för att slumpa mellan 1 till 3 har vi såhär så att man kan styra oddsen.
             if behindDoor <= 1:
                 trap()
@@ -124,6 +127,7 @@ def door():# Funktion för vad som finns bakom dörrarna
                 chest()
                 break
         else:
+            section()
             print("\n        Du måste välja mellan 1, 2 eller 3!")
             clear()
 
