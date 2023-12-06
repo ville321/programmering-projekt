@@ -56,7 +56,6 @@ def start_menu():# Funktion för Start menyn
     while True:
         choice = input("\n        Vill du börja spela? (y/n) \n\n        ")
         if choice.lower() == "y":
-            choose_action()
             break
         elif choice.lower() == "n":
             exit()
