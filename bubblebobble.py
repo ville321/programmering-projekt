@@ -82,7 +82,7 @@ def choose_action(): #Loop som programmet hela tiden kommer tillbaka till. Där 
             if len(player.inventory) > 0: #Kollar om inventoryt är tomt. Om det är tomt printar den att det är tomt annars printar det innehåller i inventoryt.
                 print("\n        Inventory: ", end='')
                 for item in player.inventory:
-                    print(f"\n          {item.name} - {item.strength_bonus} styrka", end='')
+                    print(f"\n          {item.name} - {item.strength_bonus} styrka", end='') 
                 print("")
                 section()
                 clear()
